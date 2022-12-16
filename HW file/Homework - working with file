@@ -1,0 +1,29 @@
+from pprint import pprint
+with open('recipes.txt', encoding='utf-8') as file:
+    cook_book = {}
+    for i in file:
+        namedish = i.strip()
+        countdish = int(file.readline())
+        recipes = []
+        cook_book[namedish] = recipes
+        for ii in range(countdish):
+            recipe = file.readline().strip()
+            ing, title, unit = recipe.split(' | ')
+            recipes.append({
+                'ingredient_name': ing,
+                'quantity': title,
+                'measure': unit
+            })
+        file.readline()
+    pprint(cook_book)
+
+shop_list_by_dishes = {}
+
+def get_shop_list_by_dishes(dishes, person_count):
+    for all_dish in cook_book:
+        if dishes in cook_book.keys():
+            for every_ingredient in cook_book[dishes]:
+
+
+
+

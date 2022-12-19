@@ -1,29 +1,34 @@
-from pprint import pprint
-with open('recipes.txt', encoding='utf-8') as file:
-    cook_book = {}
-    for i in file:
-        namedish = i.strip()
-        countdish = int(file.readline())
-        recipes = []
-        cook_book[namedish] = recipes
-        for ii in range(countdish):
-            recipe = file.readline().strip()
-            ing, title, unit = recipe.split(' | ')
-            recipes.append({
-                'ingredient_name': ing,
-                'quantity': title,
-                'measure': unit
-            })
-        file.readline()
-    pprint(cook_book)
-
-shop_list_by_dishes = {}
-
 def get_shop_list_by_dishes(dishes, person_count):
-    for all_dish in cook_book:
-        if dishes in cook_book.keys():
-            for every_ingredient in cook_book[dishes]:
+    with open('recipes.txt', encoding='utf-8') as f:
+        cook_book = {}
+        for line in f:
+            dish_name = line.strip()
+            count_ingredients = int(f.readline())
+            ingredients = []
+            for i in range(count_ingredients):
+                ingredient = f.readline().strip()
+                ingredient_name, quantity, measure = ingredient.split(' | ')
+                ingredients.append({
+                    'ingredient_name': ingredient_name,
+                    'quantity': quantity,
+                    'measure': measure
+                })
+            f.readline()
+            cook_book[dish_name] = ingredients
+            # print(f'cook_book = {cook_book}')
+    shop_list_by_dishes = {}
+    for every_dish in dishes:
+        if every_dish in cook_book.keys():
+            for every_ingredients in cook_book[every_dish]:
+                key = every_ingredients['ingredient_name']
+                if key in shop_list_by_dishes.keys():
+                    shop_list_by_dishes[key]['quantity'] += int(every_ingredients['quantity']) * person_count
+                else:
+                    mes = every_ingredients['measure']
+
+                    shop_list_by_dishes[key] = {'quantity': int(every_ingredients['quantity']) * person_count, 'measure': mes}
+
+    return shop_list_by_dishes
 
 
-
-
+print(get_shop_list_by_dishes(['Запеченный картофель'], 10))
